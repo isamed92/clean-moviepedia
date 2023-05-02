@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviepidea/presentation/providers/providers.dart';
+import 'package:moviepidea/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,16 +42,24 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     if (nowPlayingMovies.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-    return FadeIn(
-      child: ListView.builder(
-        itemCount: nowPlayingMovies.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(nowPlayingMovies[index].originalTitle),
-            subtitle: Text(nowPlayingMovies[index].overview),
-          );
-        },
-      ),
+    return Column(
+      children: [
+        CustomAppBar(),
+        MoviesSlideShow(movies: nowPlayingMovies),
+        // Expanded(
+        //   child: FadeIn(
+        //     child: ListView.builder(
+        //       itemCount: nowPlayingMovies.length,
+        //       itemBuilder: (context, index) {
+        //         return ListTile(
+        //           title: Text(nowPlayingMovies[index].originalTitle),
+        //           subtitle: Text(nowPlayingMovies[index].overview),
+        //         );
+        //       },
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }
