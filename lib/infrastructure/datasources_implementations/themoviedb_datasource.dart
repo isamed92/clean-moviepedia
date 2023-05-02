@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:moviepidea/config/constants/environment.dart';
 import 'package:moviepidea/domain/datasources/movies_datasource.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
+import 'package:moviepidea/infrastructure/mappers/movie_mapper.dart';
+import 'package:moviepidea/infrastructure/models/moviedb/moviedb_response.dart';
 
 class TheMovideDbDatasource extends MovieDatasource {
   final Dio dio = Dio(
@@ -13,10 +15,12 @@ class TheMovideDbDatasource extends MovieDatasource {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
     final response = await dio.get('/movie/now_playing');
+    final movieDbResponse = MovieDbResponse.fromJson(response.data);
 
-    final data = response.data;
-    print(data);
-    final List<Movie> movies = [];
-    return [];
+    final List<Movie> movies = movieDbResponse.results
+        .where((element) => element.posterPath != 'no-poster')
+        .map((moviedb) => MovieMapper.movieDBToEntity(moviedb))
+        .toList();
+    return movies;
   }
 }
