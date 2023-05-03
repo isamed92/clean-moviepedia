@@ -27,6 +27,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
@@ -38,6 +41,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideshowMovies = ref.watch(moviesSlideShowProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final topMovies = ref.watch(topRatedMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
 
     return CustomScrollView(slivers: [
       const SliverAppBar(
@@ -59,22 +65,22 @@ class _HomeViewState extends ConsumerState<_HomeView> {
             ),
             MovieHorizontalListView(
               loadNextPage: () =>
-                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-              movies: nowPlayingMovies,
+                  ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
+              movies: upcomingMovies,
               title: 'Proximamente',
               subtitle: 'Este mes',
             ),
             MovieHorizontalListView(
-              loadNextPage: () =>
-                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-              movies: nowPlayingMovies,
+              movies: popularMovies,
               title: 'Populares',
               subtitle: '',
+              loadNextPage: () =>
+                  ref.read(popularMoviesProvider.notifier).loadNextPage(),
             ),
             MovieHorizontalListView(
               loadNextPage: () =>
-                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-              movies: nowPlayingMovies,
+                  ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
+              movies: topMovies,
               title: 'Mejor calificadas',
               subtitle: 'de todos los tiempos',
             ),
