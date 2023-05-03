@@ -39,18 +39,51 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideshowMovies = ref.watch(moviesSlideShowProvider);
 
-    return Column(
-      children: [
-        const CustomAppBar(),
-        MoviesSlideShow(movies: slideshowMovies),
-        MovieHorizontalListView(
-          loadNextPage: () =>
-              ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-          movies: nowPlayingMovies,
-          title: 'En cines',
-          subtitle: 'Lunes 20',
-        )
-      ],
-    );
+    return CustomScrollView(slivers: [
+      const SliverAppBar(
+        floating: true,
+        flexibleSpace: FlexibleSpaceBar(title: CustomAppBar()),
+      ),
+      SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        return Column(
+          children: [
+            // const CustomAppBar(),
+            MoviesSlideShow(movies: slideshowMovies),
+            MovieHorizontalListView(
+              loadNextPage: () =>
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+              movies: nowPlayingMovies,
+              title: 'En cines',
+              subtitle: 'Lunes 20',
+            ),
+            MovieHorizontalListView(
+              loadNextPage: () =>
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+              movies: nowPlayingMovies,
+              title: 'Proximamente',
+              subtitle: 'Este mes',
+            ),
+            MovieHorizontalListView(
+              loadNextPage: () =>
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+              movies: nowPlayingMovies,
+              title: 'Populares',
+              subtitle: '',
+            ),
+            MovieHorizontalListView(
+              loadNextPage: () =>
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+              movies: nowPlayingMovies,
+              title: 'Mejor calificadas',
+              subtitle: 'de todos los tiempos',
+            ),
+            const SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      }, childCount: 1))
+    ]);
   }
 }
