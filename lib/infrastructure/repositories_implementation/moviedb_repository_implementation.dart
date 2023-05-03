@@ -8,6 +8,6 @@ class MovieDbRepositoryImplementation extends MoviesRepository {
   MovieDbRepositoryImplementation(this.datasource);
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) {
-    return datasource.getNowPlaying();
+    return datasource.getNowPlaying(page: page);
   }
 }
