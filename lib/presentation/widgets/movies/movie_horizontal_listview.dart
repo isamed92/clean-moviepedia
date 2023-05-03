@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moviepidea/config/helpers/human_formats.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
 
@@ -131,7 +132,10 @@ class _Slide extends StatelessWidget {
                     );
                   }
 
-                  return FadeIn(child: child);
+                  return GestureDetector(
+                    child: FadeIn(child: child),
+                    onTap: () => context.push('/movie/${movie.id}'),
+                  );
                 },
               ),
             ),
