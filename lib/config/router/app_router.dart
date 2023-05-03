@@ -16,4 +16,11 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
           },
         ),
       ]),
+  GoRoute(
+    path: '/genders/:gender',
+    name: GenderScreen.name,
+    builder: (context, state) {
+      return const GenderScreen();
+    },
+  ),
 ]);

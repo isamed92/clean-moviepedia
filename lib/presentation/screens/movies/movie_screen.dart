@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
-import 'package:moviepidea/presentation/providers/movies/movie_info_provider.dart';
+import 'package:moviepidea/presentation/providers/providers.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie';
@@ -17,6 +18,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   void initState() {
     super.initState();
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
@@ -95,10 +97,13 @@ class _MovieDetails extends StatelessWidget {
             children: [
               ...movie.genreIds.map((e) => Container(
                     margin: const EdgeInsets.only(right: 10),
-                    child: Chip(
-                      label: Text(e),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                    child: GestureDetector(
+                      onTap: () => context.push('/genders/${e.toLowerCase()}'),
+                      child: Chip(
+                        label: Text(e),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
                     ),
                   ))
             ],
