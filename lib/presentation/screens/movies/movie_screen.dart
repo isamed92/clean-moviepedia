@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -188,7 +189,14 @@ class _CustomSliverAppBar extends StatelessWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(children: [
           SizedBox.expand(
-            child: Image.network(movie.posterPath, fit: BoxFit.cover),
+            child: Image.network(
+              movie.posterPath,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress != null) return const SizedBox();
+                return FadeIn(child: child);
+              },
+            ),
           ),
           const SizedBox.expand(
             child: DecoratedBox(
