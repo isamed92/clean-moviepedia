@@ -109,11 +109,67 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-        // TODO mostrar actores listview
+        _ActorsByMovie(movieId: movie.id.toString()),
         const SizedBox(
-          height: 100,
+          height: 50,
         ),
       ],
+    );
+  }
+}
+
+class _ActorsByMovie extends ConsumerWidget {
+  final String movieId;
+  const _ActorsByMovie({super.key, required this.movieId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final actorsByMovie = ref.watch(actorsByMovieProvider)[movieId];
+
+    if (actorsByMovie == null) {
+      return const CircularProgressIndicator(
+        strokeWidth: 2,
+      );
+    }
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: actorsByMovie.length,
+        itemBuilder: (BuildContext context, int index) {
+          final actor = actorsByMovie[index];
+          return Container(
+            padding: const EdgeInsets.all(8),
+            width: 135,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  actor.profilePath,
+                  height: 180,
+                  width: 135,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                actor.name,
+                maxLines: 2,
+              ),
+              Text(
+                actor.character ?? '',
+                maxLines: 2,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis),
+              ),
+            ]),
+          );
+        },
+      ),
     );
   }
 }
@@ -130,42 +186,43 @@ class _CustomSliverAppBar extends StatelessWidget {
       expandedHeight: size.height * 0.7,
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
-          background: Stack(children: [
-            SizedBox.expand(
-              child: Image.network(movie.posterPath, fit: BoxFit.cover),
-            ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            Colors.black87,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.6, 1.0]))),
-            ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            Colors.black45,
-                            Colors.transparent,
-                          ],
-                          begin: Alignment.topLeft,
-                          stops: [0.0, 0.4]))),
-            ),
-          ]),
-          titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          title: Text(
-            movie.title,
-            style: const TextStyle(
-              fontSize: 20,
-            ),
-            textAlign: TextAlign.start,
-          )),
+        background: Stack(children: [
+          SizedBox.expand(
+            child: Image.network(movie.posterPath, fit: BoxFit.cover),
+          ),
+          const SizedBox.expand(
+            child: DecoratedBox(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.black87,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.6, 1.0]))),
+          ),
+          const SizedBox.expand(
+            child: DecoratedBox(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [
+                          Colors.black45,
+                          Colors.transparent,
+                        ],
+                        begin: Alignment.topLeft,
+                        stops: [0.0, 0.4]))),
+          ),
+        ]),
+        titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        // title: Text(
+        //   movie.title,
+        //   style: const TextStyle(
+        //     fontSize: 20,
+        //   ),
+        //   textAlign: TextAlign.start,
+        // )
+      ),
     );
   }
 }
