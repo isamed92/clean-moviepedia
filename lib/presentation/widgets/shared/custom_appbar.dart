@@ -10,7 +10,6 @@ class CustomAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movieRepository = ref.read(movieRepositoryProvider);
     final colors = Theme.of(context).colorScheme;
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     return SafeArea(
@@ -35,13 +34,19 @@ class CustomAppBar extends ConsumerWidget {
               const Spacer(),
               IconButton(
                   onPressed: () {
+                    final searchedMovies = ref.read(searchedMoviesProvider);
+                    final searchQuery = ref.read(searchQueryProvider);
                     showSearch<Movie?>(
+                        query: searchQuery,
                         context: context,
                         delegate: SearchMovieDelegate(
-                          searchMovies: movieRepository.searchMovies,
-                        )).then((value) {
-                      if (value != null) {
-                        context.push('/movie/${value.id}');
+                          initialMovies: searchedMovies,
+                          searchMovies: ref
+                              .read(searchedMoviesProvider.notifier)
+                              .searchMoviesByQuery,
+                        )).then((movie) {
+                      if (movie != null) {
+                        context.push('/movie/${movie.id}');
                       }
                     });
                   },

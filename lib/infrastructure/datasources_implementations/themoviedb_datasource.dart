@@ -54,8 +54,9 @@ class TheMovideDbDatasource extends MovieDatasource {
   @override
   Future<Movie> getMovieById(String id) async {
     final response = await dio.get('/movie/$id');
-    if (response.statusCode != 200)
+    if (response.statusCode != 200) {
       throw Exception('movie with id: $id not found');
+    }
 
     final movieDB = MovieDetails.fromJson(response.data);
     final movie = MovieMapper.movieDetailToEntity(movieDB);
@@ -64,6 +65,7 @@ class TheMovideDbDatasource extends MovieDatasource {
 
   @override
   Future<List<Movie>> searchMovies(String query) async {
+    if (query.isEmpty) return [];
     final response =
         await dio.get('/search/movie', queryParameters: {'query': query});
     return _jsonToMovies(response.data);
