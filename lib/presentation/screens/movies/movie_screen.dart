@@ -121,7 +121,7 @@ class _MovieDetails extends StatelessWidget {
 
 class _ActorsByMovie extends ConsumerWidget {
   final String movieId;
-  const _ActorsByMovie({super.key, required this.movieId});
+  const _ActorsByMovie({required this.movieId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -175,23 +175,19 @@ class _ActorsByMovie extends ConsumerWidget {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
   const _CustomSliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return SliverAppBar(
       actions: [
-        // IconButton(
-        //     onPressed: () {},
-        //     icon: const Icon(
-        //       Icons.favorite_rounded,
-        //       color: Colors.red,
-        //     )),
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ref.watch(localStorageRepositoryProvider).toggleFavourite(movie);
+            },
             icon: const Icon(
               Icons.favorite_border,
             )),
