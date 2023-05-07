@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moviepidea/config/helpers/human_formats.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
 import 'package:moviepidea/presentation/providers/providers.dart';
 import 'package:moviepidea/presentation/widgets/widgets.dart';
@@ -74,45 +75,89 @@ class _MovieDetails extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            SizedBox(
-              width: size.width - 240 * 0.7,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    movie.title,
-                    style: textStyle.titleLarge,
-                  ),
-                  Text(
-                    movie.overview,
-                    textAlign: TextAlign.justify,
-                  ),
-                ],
-              ),
-            ),
+            _TitleAndOverview(size: size, movie: movie, textStyle: textStyle),
           ]),
         ),
         // generos de pelicula
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Wrap(
-            children: [
-              ...movie.genreIds.map((e) => Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: GestureDetector(
-                      onTap: () => context.push('/genders/${e.toLowerCase()}'),
-                      child: Chip(
-                        label: Text(e),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                    ),
-                  ))
-            ],
-          ),
-        ),
+        _Genres(movie: movie),
         ActorsByMovie(movieId: movie.id.toString()),
       ],
+    );
+  }
+}
+
+class _Genres extends StatelessWidget {
+  const _Genres({
+    required this.movie,
+  });
+
+  final Movie movie;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Wrap(
+        children: [
+          ...movie.genreIds.map((e) => Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                  onTap: () => context.push('/genders/${e.toLowerCase()}'),
+                  child: Chip(
+                    label: Text(e),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+}
+
+class _TitleAndOverview extends StatelessWidget {
+  const _TitleAndOverview({
+    required this.size,
+    required this.movie,
+    required this.textStyle,
+  });
+
+  final Size size;
+  final Movie movie;
+  final TextTheme textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size.width - 240 * 0.7,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            movie.title,
+            style: textStyle.titleLarge,
+          ),
+          Text(
+            movie.overview,
+            textAlign: TextAlign.justify,
+          ),
+          MovieRating(
+              voteAverage: movie.voteAverage, popularity: movie.popularity),
+          Row(
+            children: [
+              const Text(
+                'Estreno:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(HumanFormats.shortDate(movie.releaseDate))
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -161,6 +206,12 @@ class _CustomSliverAppBar extends ConsumerWidget {
       expandedHeight: size.height * 0.7,
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
+        title: _CustomGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: const [0.7, 1.0],
+          colors: [Colors.transparent, scaffoldBackgroundColor],
+        ),
         background: Stack(children: [
           SizedBox.expand(
             child: Image.network(
@@ -171,17 +222,6 @@ class _CustomSliverAppBar extends ConsumerWidget {
                 return FadeIn(child: child);
               },
             ),
-          ),
-
-          //bottom gradient
-          _CustomGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0.7, 1.0],
-            colors: [
-              Colors.transparent,
-              scaffoldBackgroundColor,
-            ],
           ),
 
           //back gradiente
@@ -206,7 +246,7 @@ class _CustomSliverAppBar extends ConsumerWidget {
             ],
           ),
         ]),
-        titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        titlePadding: const EdgeInsets.only(bottom: 0),
       ),
     );
   }
