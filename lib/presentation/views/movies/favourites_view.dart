@@ -52,13 +52,14 @@ class FavouritesViewState extends ConsumerState<FavouritesView> {
             style: TextStyle(fontSize: 30, color: colors.primary),
           ),
           const Text('No tienes peliculas favoritas',
-              style: TextStyle(fontSize: 20, color: Colors.black45)),
-          SizedBox(
+              style: TextStyle(fontSize: 20)),
+          const SizedBox(
             height: 20,
           ),
-          FilledButton.tonal(
+          FilledButton.icon(
+              icon: const Icon(Icons.add_box_rounded),
               onPressed: () => context.go('/home/0'),
-              child: Text('Empieza a buscar'))
+              label: const Text('Empieza a buscar'))
         ]),
       );
     }
