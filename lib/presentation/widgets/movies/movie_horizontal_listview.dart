@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moviepidea/config/helpers/human_formats.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
+import 'package:moviepidea/presentation/widgets/widgets.dart';
 
 class MovieHorizontalListView extends StatefulWidget {
   const MovieHorizontalListView(
@@ -151,34 +151,9 @@ class _Slide extends StatelessWidget {
               style: textStyle.titleSmall,
             ),
           ),
-          SizedBox(
-            width: 150,
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star_half_outlined,
-                  color: Colors.yellow.shade800,
-                ),
-                const SizedBox(
-                  width: 3,
-                ),
-                Text(
-                  '${movie.voteAverage}',
-                  style: textStyle.bodyMedium!
-                      .copyWith(color: Colors.yellow.shade800),
-                ),
-                const Spacer(flex: 1),
-                const Icon(
-                  Icons.remove_red_eye_outlined,
-                  size: 16,
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(HumanFormats.number(movie.popularity),
-                    style: textStyle.bodySmall)
-              ],
-            ),
+          MovieRating(
+            popularity: movie.popularity,
+            voteAverage: movie.voteAverage,
           )
         ],
       ),

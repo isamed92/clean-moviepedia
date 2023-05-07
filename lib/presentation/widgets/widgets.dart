@@ -5,3 +5,4 @@ export './shared/custom_bottom_navigationbar.dart';
 export './movies/movie_horizontal_listview.dart';
 export './movies/movie_masonry.dart';
 export './movies/movie_poster_link.dart';
+export './movies/movie_rating.dart';
