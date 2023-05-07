@@ -13,16 +13,34 @@ class MovieMasonry extends StatefulWidget {
 }
 
 class _MovieMasonryState extends State<MovieMasonry> {
-  //todo init state
+  final ScrollController controller = ScrollController();
 
-  //todo dispose
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      if (widget.loadNextPage == null) return;
+      if (controller.position.pixels + 150 >=
+          controller.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        crossAxisCount: 3,
+      child: MasonryGridView.builder(
+        controller: controller,
+        gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3),
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
         itemCount: widget.movies.length,

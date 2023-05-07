@@ -39,9 +39,24 @@ class FavouritesViewState extends ConsumerState<FavouritesView> {
     final movies = ref.watch(favouritesMoviesProvider).values.toList();
 
     return Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.favorite_border,
+                color: Colors.pink,
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Text('Favs: ${movies.length}'),
+            ],
+          ),
+        ),
         body: MovieMasonry(
-      loadNextPage: loadNextPage,
-      movies: movies,
-    ));
+          loadNextPage: loadNextPage,
+          movies: movies,
+        ));
   }
 }
