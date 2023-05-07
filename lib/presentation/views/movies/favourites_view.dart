@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moviepidea/presentation/providers/providers.dart';
 import 'package:moviepidea/presentation/widgets/widgets.dart';
 
@@ -37,7 +38,30 @@ class FavouritesViewState extends ConsumerState<FavouritesView> {
   @override
   Widget build(BuildContext context) {
     final movies = ref.watch(favouritesMoviesProvider).values.toList();
-
+    final colors = Theme.of(context).colorScheme;
+    if (movies.isEmpty) {
+      return Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(
+            Icons.favorite_border_sharp,
+            color: colors.primary,
+            size: 60,
+          ),
+          Text(
+            'Oh no!',
+            style: TextStyle(fontSize: 30, color: colors.primary),
+          ),
+          const Text('No tienes peliculas favoritas',
+              style: TextStyle(fontSize: 20, color: Colors.black45)),
+          SizedBox(
+            height: 20,
+          ),
+          FilledButton.tonal(
+              onPressed: () => context.go('/home/0'),
+              child: Text('Empieza a buscar'))
+        ]),
+      );
+    }
     return Scaffold(
         appBar: AppBar(
           title: Row(
