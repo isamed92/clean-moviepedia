@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviepidea/presentation/providers/providers.dart';
+import 'package:moviepidea/presentation/widgets/widgets.dart';
 
 // initstate
 // solo las primera 10
@@ -12,6 +13,8 @@ class FavouritesView extends ConsumerStatefulWidget {
 }
 
 class FavouritesViewState extends ConsumerState<FavouritesView> {
+  bool isLastPage = false;
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -19,20 +22,26 @@ class FavouritesViewState extends ConsumerState<FavouritesView> {
     ref.read(favouritesMoviesProvider.notifier).loadNextPage();
   }
 
+  void loadNextPage() async {
+    if (isLoading || isLastPage) return;
+
+    isLoading = true;
+    final movies =
+        await ref.read(favouritesMoviesProvider.notifier).loadNextPage();
+    isLoading = false;
+    if (movies.isEmpty) {
+      isLastPage = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final movies = ref.watch(favouritesMoviesProvider).values.toList();
 
     return Scaffold(
-      body: ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (BuildContext context, int index) {
-          final movie = movies[index];
-          return ListTile(
-            title: Text(movie.title),
-          );
-        },
-      ),
-    );
+        body: MovieMasonry(
+      loadNextPage: loadNextPage,
+      movies: movies,
+    ));
   }
 }
