@@ -6,3 +6,4 @@ export './movies/movie_horizontal_listview.dart';
 export './movies/movie_masonry.dart';
 export './movies/movie_poster_link.dart';
 export './movies/movie_rating.dart';
+export './movies/actors_by_movie.dart';

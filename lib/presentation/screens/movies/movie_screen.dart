@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
 import 'package:moviepidea/presentation/providers/providers.dart';
+import 'package:moviepidea/presentation/widgets/widgets.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie';
@@ -61,7 +62,7 @@ class _MovieDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -110,67 +111,8 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-        _ActorsByMovie(movieId: movie.id.toString()),
-        const SizedBox(
-          height: 50,
-        ),
+        ActorsByMovie(movieId: movie.id.toString()),
       ],
-    );
-  }
-}
-
-class _ActorsByMovie extends ConsumerWidget {
-  final String movieId;
-  const _ActorsByMovie({required this.movieId});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final actorsByMovie = ref.watch(actorsByMovieProvider)[movieId];
-
-    if (actorsByMovie == null) {
-      return const CircularProgressIndicator(
-        strokeWidth: 2,
-      );
-    }
-    return SizedBox(
-      height: 300,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: actorsByMovie.length,
-        itemBuilder: (BuildContext context, int index) {
-          final actor = actorsByMovie[index];
-          return Container(
-            padding: const EdgeInsets.all(8),
-            width: 135,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  actor.profilePath,
-                  height: 180,
-                  width: 135,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                actor.name,
-                maxLines: 2,
-              ),
-              Text(
-                actor.character ?? '',
-                maxLines: 2,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis),
-              ),
-            ]),
-          );
-        },
-      ),
     );
   }
 }
