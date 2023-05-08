@@ -1,4 +1,4 @@
-import 'package:moviepidea/domain/entities/movie.dart';
+import 'package:moviepidea/domain/entities/entities.dart';
 
 abstract class MoviesRepository {
   Future<List<Movie>> getNowPlaying({int page = 1});
@@ -8,5 +8,5 @@ abstract class MoviesRepository {
   Future<Movie> getMovieById(String id);
   Future<List<Movie>> searchMovies(String query);
   Future<List<Movie>> similarMovies({required int id, int page = 1});
-  Future<List<String>> getYoutubeVideosById(int id);
+  Future<List<Video>> getYoutubeVideosById(int id);
 }

@@ -1,5 +1,5 @@
 import 'package:moviepidea/domain/datasources/movies_datasource.dart';
-import 'package:moviepidea/domain/entities/movie.dart';
+import 'package:moviepidea/domain/entities/entities.dart';
 import 'package:moviepidea/domain/repositories/movies_repository.dart';
 
 class MovieDbRepositoryImplementation extends MoviesRepository {
@@ -42,7 +42,7 @@ class MovieDbRepositoryImplementation extends MoviesRepository {
   }
 
   @override
-  Future<List<String>> getYoutubeVideosById(int id) {
+  Future<List<Video>> getYoutubeVideosById(int id) {
     return datasource.getYoutubeVideosById(id);
   }
 }

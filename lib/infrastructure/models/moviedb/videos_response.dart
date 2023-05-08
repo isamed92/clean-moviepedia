@@ -1,6 +1,6 @@
 class VideosResponse {
   final int id;
-  final List<Result> results;
+  final List<VideoResult> results;
 
   VideosResponse({
     required this.id,
@@ -9,8 +9,8 @@ class VideosResponse {
 
   factory VideosResponse.fromJson(Map<String, dynamic> json) => VideosResponse(
         id: json["id"],
-        results:
-            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+        results: List<VideoResult>.from(
+            json["results"].map((x) => VideoResult.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -19,7 +19,7 @@ class VideosResponse {
       };
 }
 
-class Result {
+class VideoResult {
   final String iso6391;
   final String iso31661;
   final String name;
@@ -31,7 +31,7 @@ class Result {
   final DateTime publishedAt;
   final String id;
 
-  Result({
+  VideoResult({
     required this.iso6391,
     required this.iso31661,
     required this.name,
@@ -44,7 +44,7 @@ class Result {
     required this.id,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory VideoResult.fromJson(Map<String, dynamic> json) => VideoResult(
         iso6391: json["iso_639_1"],
         iso31661: json["iso_3166_1"],
         name: json["name"],

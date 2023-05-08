@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:moviepidea/config/constants/environment.dart';
 import 'package:moviepidea/domain/datasources/movies_datasource.dart';
-import 'package:moviepidea/domain/entities/movie.dart';
+import 'package:moviepidea/domain/entities/entities.dart';
 import 'package:moviepidea/infrastructure/mappers/movie_mapper.dart';
+import 'package:moviepidea/infrastructure/mappers/video_mapper.dart';
 import 'package:moviepidea/infrastructure/models/models.dart';
 
 class TheMovideDbDatasource extends MovieDatasource {
@@ -79,16 +80,16 @@ class TheMovideDbDatasource extends MovieDatasource {
   }
 
   @override
-  Future<List<String>> getYoutubeVideosById(int id) async {
+  Future<List<Video>> getYoutubeVideosById(int id) async {
     final response = await dio.get('/movie/$id/videos');
     final videosYTResponse = VideosResponse.fromJson(response.data);
-    final youtubeIds = <String>[];
+    final videos = <Video>[];
 
     for (final video in videosYTResponse.results) {
       if (video.site == 'YouTube') {
-        youtubeIds.add(video.key);
+        videos.add(VideoMapper.videoToEntity(video));
       }
     }
-    return youtubeIds;
+    return videos;
   }
 }
