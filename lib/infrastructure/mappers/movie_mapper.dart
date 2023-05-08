@@ -1,6 +1,5 @@
 import 'package:moviepidea/domain/entities/movie.dart';
-import 'package:moviepidea/infrastructure/models/moviedb/movie_details.dart';
-import 'package:moviepidea/infrastructure/models/moviedb/movie_moviedb.dart';
+import 'package:moviepidea/infrastructure/models/models.dart';
 
 class MovieMapper {
   static Movie movieDBToEntity(MovieMovieDB moviedb) => Movie(

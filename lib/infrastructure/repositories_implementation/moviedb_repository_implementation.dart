@@ -37,7 +37,12 @@ class MovieDbRepositoryImplementation extends MoviesRepository {
   }
 
   @override
-  Future<List<Movie>> similarMovies({required String id, int page = 1}) {
+  Future<List<Movie>> similarMovies({required int id, int page = 1}) {
     return datasource.similarMovies(id: id, page: page);
+  }
+
+  @override
+  Future<List<String>> getYoutubeVideosById(int id) {
+    return datasource.getYoutubeVideosById(id);
   }
 }

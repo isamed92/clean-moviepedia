@@ -3,8 +3,7 @@ import 'package:moviepidea/config/constants/environment.dart';
 import 'package:moviepidea/domain/datasources/movies_datasource.dart';
 import 'package:moviepidea/domain/entities/movie.dart';
 import 'package:moviepidea/infrastructure/mappers/movie_mapper.dart';
-import 'package:moviepidea/infrastructure/models/moviedb/movie_details.dart';
-import 'package:moviepidea/infrastructure/models/moviedb/moviedb_response.dart';
+import 'package:moviepidea/infrastructure/models/models.dart';
 
 class TheMovideDbDatasource extends MovieDatasource {
   final Dio dio = Dio(
@@ -72,10 +71,24 @@ class TheMovideDbDatasource extends MovieDatasource {
   }
 
   @override
-  Future<List<Movie>> similarMovies({required String id, int page = 1}) async {
+  Future<List<Movie>> similarMovies({required int id, int page = 1}) async {
     final response =
         await dio.get('/movie/$id/similar', queryParameters: {'page': page});
 
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<String>> getYoutubeVideosById(int id) async {
+    final response = await dio.get('/movie/$id/videos');
+    final videosYTResponse = VideosResponse.fromJson(response.data);
+    final youtubeIds = <String>[];
+
+    for (final video in videosYTResponse.results) {
+      if (video.site == 'YouTube') {
+        youtubeIds.add(video.key);
+      }
+    }
+    return youtubeIds;
   }
 }

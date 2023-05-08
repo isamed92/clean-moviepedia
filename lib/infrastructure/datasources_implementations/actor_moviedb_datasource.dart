@@ -3,7 +3,7 @@ import 'package:moviepidea/config/constants/environment.dart';
 import 'package:moviepidea/domain/datasources/actors_datasource.dart';
 import 'package:moviepidea/domain/entities/actor.dart';
 import 'package:moviepidea/infrastructure/mappers/actor_mapper.dart';
-import 'package:moviepidea/infrastructure/models/moviedb/credits_response.dart';
+import 'package:moviepidea/infrastructure/models/models.dart';
 
 class ActorMovieDbDatasource extends ActorsDatasource {
   final Dio dio = Dio(
