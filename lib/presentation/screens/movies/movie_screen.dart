@@ -81,6 +81,7 @@ class _MovieDetails extends StatelessWidget {
         // generos de pelicula
         _Genres(movie: movie),
         ActorsByMovie(movieId: movie.id.toString()),
+        SimilarMovies(movie.id.toString()),
       ],
     );
   }
