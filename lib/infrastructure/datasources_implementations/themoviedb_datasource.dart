@@ -70,4 +70,12 @@ class TheMovideDbDatasource extends MovieDatasource {
         await dio.get('/search/movie', queryParameters: {'query': query});
     return _jsonToMovies(response.data);
   }
+
+  @override
+  Future<List<Movie>> similarMovies({required String id, int page = 1}) async {
+    final response =
+        await dio.get('/movie/$id/similar', queryParameters: {'page': page});
+
+    return _jsonToMovies(response.data);
+  }
 }

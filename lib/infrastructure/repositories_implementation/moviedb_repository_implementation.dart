@@ -35,4 +35,9 @@ class MovieDbRepositoryImplementation extends MoviesRepository {
   Future<List<Movie>> searchMovies(String query) {
     return datasource.searchMovies(query);
   }
+
+  @override
+  Future<List<Movie>> similarMovies({required String id, int page = 1}) {
+    return datasource.similarMovies(id: id, page: page);
+  }
 }
