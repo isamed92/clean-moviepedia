@@ -7,4 +7,5 @@ export './movies/movie_masonry.dart';
 export './movies/movie_poster_link.dart';
 export './movies/movie_rating.dart';
 export './movies/actors_by_movie.dart';
+export './movies/videos_from_movie.dart';
 export './movies/similar_movies.dart';
